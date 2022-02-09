@@ -1,0 +1,26 @@
+// ================================
+//          1-TOOLS
+// ================================
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './1-TOOLS/font-face';
+@import './1-TOOLS/fontawesome/fontawesome';
+@import './1-TOOLS/fontawesome/solid.scss';
+@import './1-TOOLS/fontawesome/regular.scss';
+@import './1-TOOLS/fontawesome/brands.scss';
+// ================================
+//          2-BASICS
+// ================================
+@import './2-BASICS/global';
+// ================================
+//          3-LAYOUTS
+// ================================
+@import './3-LAYOUTS/header';
+@import './3-LAYOUTS/footer';
+// ================================
+//          4-PAGES
+// ================================
+@import './4-PAGES/home';
+@import './4-PAGES/article';
