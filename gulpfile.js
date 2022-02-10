@@ -1,5 +1,4 @@
 /*
-
 root/
 ├─ public/
 │  ├─ assets/
@@ -16,27 +15,8 @@ root/
 │  │  ├─ vendors/
 │  │  ├─ image/
 │  ├─ data/
-│  ├─ *.html
-
+│  ├─ pages/*.html
 */
-
-const
-    gulp = require('gulp'),
-    gulpIf = require('gulp-if'),
-    del = require('del'), //For Cleaning build/dist for fresh export
-    imagemin = require('gulp-imagemin'), //To Optimize Images
-    uglify = require('gulp-uglify'), //To Minify JS files
-    minifyHtml = require('gulp-minify-html'),
-    sass = require('gulp-sass'), //For Compiling SASS files
-    postcss = require('gulp-postcss'), //For Compiling tailwind utilities with tailwind config
-    tailwind = require('tailwindcss'),
-    cleanCSS = require('gulp-clean-css'), //To Optimize css
-    purgecss = require('gulp-purgecss'), // Remove Unused CSS from Styles
-    prefix = require('gulp-autoprefixer'),
-    sourcemaps = require('gulp-sourcemaps'),
-    rename = require('gulp-rename'),
-    concat = require('gulp-concat'), //For Concatinating js,css files
-    browserSync = require("browser-sync").create();
 
 // config
 const { public, src, prefixValue } = {
@@ -54,31 +34,59 @@ const { public, src, prefixValue } = {
         vendors: 'src/assets/vendors/**',
         image: 'src/assets/image/*',
         data: 'src/data/*',
-        html: 'src/*.html'
+        html: { pages: 'src/pages/*.html', all: 'src/pages/**/*.html'}
     },
     prefixValue: 'last 2 versions'
 }
 
+const
+    gulp = require('gulp'),
+    gulpIf = require('gulp-if'),
+    imagemin = require('gulp-imagemin'), //To Optimize Images
+    uglify = require('gulp-uglify'), //To Minify JS files
+
+    // css
+    sass = require('gulp-sass'), //For Compiling SASS files
+    postcss = require('gulp-postcss'), //For Compiling tailwind utilities with tailwind config
+    tailwind = require('tailwindcss'),
+    cleanCSS = require('gulp-clean-css'), //To Optimize css
+    purgecss = require('gulp-purgecss'), // Remove Unused CSS from Styles
+    prefix = require('gulp-autoprefixer'),
+    sourcemaps = require('gulp-sourcemaps'),
+
+    // files
+    del = require('del'), //For Cleaning build/dist for fresh export
+    rename = require('gulp-rename'),
+    fileinclude = require('gulp-file-include'), // for partials
+
+    browserSync = require("browser-sync").create();
+
 function dataTask(done) {
+    del(`${public.data}**`, { force: true })
     gulp.src(src.data)
         .pipe(gulp.dest(public.data));
     done();
 }
 
 function vendorsTask(done) {
+    del(`${public.vendors}**`, { force: true })
     gulp.src(src.vendors)
         .pipe(gulp.dest(public.vendors));
     done();
 }
 
 function htmlTask(done, minify = false) {
-    gulp.src(src.html)
-        .pipe(gulpIf(minify, minifyHtml()))
+    gulp.src(src.html.pages)
+        .pipe(fileinclude({
+            prefix: '@@',
+            basepath: '@file'
+        }))
         .pipe(gulp.dest(public.root));
     done();
 }
 
 function imageTask(done, minify = false) {
+    del(`${public.image}**`, { force: true })
     gulp.src(src.image)
         .pipe(gulpIf(minify, imagemin()))
         .pipe(gulp.dest(public.image));
@@ -95,7 +103,7 @@ function cssTask(done, minify = false) {
             tailwind('./tailwind.config.js'),
         ]))
         .pipe(purgecss({
-            content: [src.html]
+            content: [src.html.all]
         }))
         .pipe(prefix(prefixValue))
         .pipe(gulpIf(minify, cleanCSS()))
@@ -108,11 +116,15 @@ function cssTask(done, minify = false) {
 }
 
 function jsTask(done, minify = false) {
-    gulp.src([`${src.js.path}lib/*.js`, `${src.js.path}classes/*.js`, src.js.index ])
-        .pipe(sourcemaps.init())
+    gulp.src([src.js.index])
+        .pipe(gulpIf(!minify, sourcemaps.init()))
+        .pipe(fileinclude({
+            prefix: '// @@',
+            basepath: '@file'
+        }))
         .pipe(gulpIf(minify, uglify()))
-        .pipe(concat(public.js.fileName))
-        .pipe(sourcemaps.write())
+        .pipe(rename(public.js.fileName))
+        .pipe(gulpIf(!minify, sourcemaps.write()))
         .pipe(gulp.dest(public.js.path))
         .pipe(browserSync.stream());
     done();
@@ -141,11 +153,6 @@ gulp.task('css', (done) => cssTask(done));
 // Scripts
 gulp.task('js', (done) => jsTask(done));
 
-// default task
-gulp.task('default', async function () {
-    return gulp.series('watch')
-});
-
 // browser-sync
 gulp.task('browser-sync', gulp.series('css', async function () {
 
@@ -156,25 +163,26 @@ gulp.task('browser-sync', gulp.series('css', async function () {
     });
 
     gulp.watch(`${src.css.path}**/*.scss`, gulp.series('css'));
-    gulp.watch(src.html).on('change', browserSync.reload);
+    gulp.watch(src.html.all).on('change', browserSync.reload);
 }));
 gulp.task('jsWatch', gulp.series('js', function (done) {
     browserSync.reload();
     done();
 }));
 
-gulp.task('watch', gulp.parallel('browser-sync', async function (done) {
+gulp.task('default', gulp.parallel('browser-sync', function (done) {
     gulp.watch(`${src.js.path}*.js`, gulp.series('js'));
     gulp.watch(src.image, gulp.series('image'));
+    gulp.watch(src.data, gulp.series('data'));
+    gulp.watch(src.vendors, gulp.series('vendors'));
     gulp.watch(`${src.css.path}*.scss`, gulp.series('css'));
-    gulp.watch(src.html, gulp.series('html'));
-    gulp.watch(src.html, browserSync.reload);
+    gulp.watch(src.html.all, gulp.series('html'));
+    gulp.watch(src.html.all, browserSync.reload);
     done();
 }));
 
-// minifying all codes
-gulp.task('minify', function (done) {
-    htmlTask(() => { }, true);
+// production
+gulp.task('production', function (done) {
     cssTask(() => { }, true);
     imageTask(() => { }, true);
     jsTask(() => { }, true);

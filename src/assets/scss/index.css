@@ -4671,24 +4671,3 @@ readers do not read off random characters that represent icons */
 body {
   font-family: var(--font-family);
   direction: rtl; }
-
-.navbar-brand {
-  font-size: var(--text-4xl);
-  font-weight: bold; }
-
-.dropdown .nav-link i {
-  transform: scale(0.8); }
-
-.dropdown-toggle::after {
-  border: none; }
-
-.nav-item.dropdown ul {
-  position: absolute;
-  top: 0; }
-
-.nav-link {
-  color: var(--clr-gray-500); }
-  .nav-link:hover, .nav-link:active, .nav-link:focus-within {
-    color: var(--clr-primary-800); }
-  .nav-link:hover ul {
-    visibility: visible; }
