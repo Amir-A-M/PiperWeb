@@ -1,9 +1,9 @@
 # gulp commands
-`gulp` for start Live server and watch `js, css, image, data, vendors, html` tasks
-`gulp vendors` To copy the vendors folder in the public path
-`gulp data` To copy the data folder in the public path
-`gulp clean` For Cleaning the public for fresh export
-`gulp production` to minify and remove sourcemap, will affect js, css and image
+`gulp` for start Live server and watch `js, css, image, data, vendors, html` tasks  
+`gulp vendors` To copy the vendors folder to the public path  
+`gulp data` To copy the data folder to the public path  
+`gulp clean` For Cleaning the public for fresh export  
+`gulp production` to minify and remove sourcemap, will affect js, css and image  
 
 ```
 root/
@@ -32,7 +32,7 @@ root/
 ```
 
 ##### for include js pieces
-```js
+```
 // @@include('./lib/jquery-3.6.0.js')
 ``` 
 
