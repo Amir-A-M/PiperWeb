@@ -3,6 +3,7 @@
         "basepath",
         "fileinclude",
         "fontawesome",
+        "kute",
         "purgecss",
         "tailwindcss"
     ]
