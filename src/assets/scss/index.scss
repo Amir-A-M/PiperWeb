@@ -3,7 +3,6 @@
 // ================================
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 
 @import './1-TOOLS/font-face';
 @import './1-TOOLS/fontawesome/fontawesome';
@@ -24,3 +23,5 @@
 // ================================
 @import './4-PAGES/home';
 @import './4-PAGES/article';
+
+@tailwind utilities;
