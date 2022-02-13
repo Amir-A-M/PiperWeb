@@ -102,9 +102,9 @@ function cssTask(done, minify = false) {
         .pipe(postcss([
             tailwind('./tailwind.config.js'),
         ]))
-        .pipe(purgecss({
+        .pipe(gulpIf(minify, purgecss({
             content: [src.html.all]
-        }))
+        })))
         .pipe(prefix(prefixValue))
         .pipe(gulpIf(minify, cleanCSS()))
         .pipe(rename(public.css.fileName))
