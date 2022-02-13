@@ -18,7 +18,7 @@ root/
 ├─ src/
 │  ├─ assets/
 │  │  ├─ scss/index.scss
-│  │  ├─ js/*
+│  │  ├─ js/index.js
 │  │  ├─ vendors/
 │  │  ├─ image/
 │  ├─ data/
@@ -35,5 +35,3 @@ root/
 ```
 // @@include('./lib/jquery-3.6.0.js')
 ``` 
-
-> :warning: **this is correct:** `// @@` ---- **this is wrong:** `//@@` 
