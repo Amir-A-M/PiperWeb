@@ -96,19 +96,26 @@ function imageTask(done, minify = false) {
 function cssTask(done, minify = false) {
 
     gulp.src(src.css.index)
-        .pipe(gulpIf(!minify, sourcemaps.init()))
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest(src.css.path))
         .pipe(postcss([
             tailwind('./tailwind.config.js'),
         ]))
         .pipe(purgecss({
-            content: ['./src/**/*.{html,js}']
+            content: ['./src/**/*.{html,js}'],
+            extractors: [
+                {
+                  extractor: (content)=>{
+                    // fix for escaped tailwind prefixes (sm:, lg:, etc)
+                    return content.match(/[A-Za-z0-9-_:\/]+/g) || []
+                  },
+                  extensions: ['css', 'html', 'vue'],
+                },
+              ],
         }))
         .pipe(prefix(prefixValue))
         .pipe(gulpIf(minify, cleanCSS()))
         .pipe(rename(public.css.fileName))
-        .pipe(gulpIf(!minify, sourcemaps.write()))
         .pipe(gulp.dest(public.css.path))
         .pipe(browserSync.stream());
 
@@ -171,7 +178,7 @@ gulp.task('jsWatch', gulp.series('js', function (done) {
 }));
 
 gulp.task('default', gulp.parallel('browser-sync', function (done) {
-    gulp.watch(`${src.js.path}*.js`, gulp.series('js'));
+    gulp.watch(`${src.js.path}**/*.js`, gulp.series('js'));
     gulp.watch(src.image, gulp.series('image'));
     gulp.watch(src.data, gulp.series('data'));
     gulp.watch(src.vendors, gulp.series('vendors'));
