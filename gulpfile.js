@@ -34,7 +34,7 @@ const { public, src, prefixValue } = {
         vendors: 'src/assets/vendors/**',
         image: 'src/assets/image/*',
         data: 'src/data/*',
-        html: { pages: 'src/pages/*.html', all: 'src/pages/**/*.html'}
+        html: { pages: 'src/pages/*.html', all: 'src/pages/**/*.html' }
     },
     prefixValue: 'last 2 versions'
 }
@@ -102,9 +102,9 @@ function cssTask(done, minify = false) {
         .pipe(postcss([
             tailwind('./tailwind.config.js'),
         ]))
-        .pipe(gulpIf(minify, purgecss({
-            content: [src.html.all]
-        })))
+        .pipe(purgecss({
+            content: ['./src/**/*.{html,js}']
+        }))
         .pipe(prefix(prefixValue))
         .pipe(gulpIf(minify, cleanCSS()))
         .pipe(rename(public.css.fileName))
@@ -175,7 +175,7 @@ gulp.task('default', gulp.parallel('browser-sync', function (done) {
     gulp.watch(src.image, gulp.series('image'));
     gulp.watch(src.data, gulp.series('data'));
     gulp.watch(src.vendors, gulp.series('vendors'));
-    gulp.watch(`${src.css.path}*.scss`, gulp.series('css'));
+    gulp.watch('./src/**/*.{html,js,scss}', gulp.series('css'));
     gulp.watch(src.html.all, gulp.series('html'));
     gulp.watch(src.html.all, browserSync.reload);
     done();
