@@ -11,7 +11,7 @@ root/
 ├─ src/
 │  ├─ assets/
 │  │  ├─ scss/index.scss
-│  │  ├─ js/*
+│  │  ├─ js/index.js
 │  │  ├─ vendors/
 │  │  ├─ image/
 │  ├─ data/
@@ -98,21 +98,12 @@ function cssTask(done, minify = false) {
     gulp.src(src.css.index)
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest(src.css.path))
+        .pipe(purgecss({
+            content: ['./src/**/*.{html,js}'],
+        }))
         .pipe(postcss([
             tailwind('./tailwind.config.js'),
         ]))
-        .pipe(purgecss({
-            content: ['./src/**/*.{html,js}'],
-            extractors: [
-                {
-                  extractor: (content)=>{
-                    // fix for escaped tailwind prefixes (sm:, lg:, etc)
-                    return content.match(/[A-Za-z0-9-_:\/]+/g) || []
-                  },
-                  extensions: ['css', 'html', 'vue'],
-                },
-              ],
-        }))
         .pipe(prefix(prefixValue))
         .pipe(gulpIf(minify, cleanCSS()))
         .pipe(rename(public.css.fileName))
