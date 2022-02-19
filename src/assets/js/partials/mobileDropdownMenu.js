@@ -24,6 +24,6 @@ function mobileDropdownMenu() {
         });
     });
 }
-if ($(window).width() > 1023) {
+if ($(window).width() < 1023) {
     mobileDropdownMenu();
 }
