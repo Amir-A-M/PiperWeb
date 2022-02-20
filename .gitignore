@@ -1,4 +1,5 @@
 node_modules
+src/assets/scss/index.css
 src/assets/vendors/fonts
 public/assets/vendors/fonts
 public

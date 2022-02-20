@@ -1,4 +1,8 @@
-body {
-    font-family: var(--font-family);
-    direction: rtl;
+@layer base {
+  *:focus-visible {
+    outline-width: 2px;
+    outline-style: solid;
+    outline-color: #bbf7d0;
+  }
+  
 }

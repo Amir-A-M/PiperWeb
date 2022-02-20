@@ -11,7 +11,7 @@ root/
 ├─ src/
 │  ├─ assets/
 │  │  ├─ scss/index.scss
-│  │  ├─ js/*
+│  │  ├─ js/index.js
 │  │  ├─ vendors/
 │  │  ├─ image/
 │  ├─ data/
@@ -34,7 +34,7 @@ const { public, src, prefixValue } = {
         vendors: 'src/assets/vendors/**',
         image: 'src/assets/image/*',
         data: 'src/data/*',
-        html: { pages: 'src/pages/*.html', all: 'src/pages/**/*.html'}
+        html: { pages: 'src/pages/*.html', all: 'src/pages/**/*.html' }
     },
     prefixValue: 'last 2 versions'
 }
@@ -96,19 +96,17 @@ function imageTask(done, minify = false) {
 function cssTask(done, minify = false) {
 
     gulp.src(src.css.index)
-        .pipe(gulpIf(!minify, sourcemaps.init()))
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest(src.css.path))
+        .pipe(purgecss({
+            content: ['./src/**/*.{html,js}'],
+        }))
         .pipe(postcss([
             tailwind('./tailwind.config.js'),
         ]))
-        .pipe(purgecss({
-            content: [src.html.all]
-        }))
         .pipe(prefix(prefixValue))
         .pipe(gulpIf(minify, cleanCSS()))
         .pipe(rename(public.css.fileName))
-        .pipe(gulpIf(!minify, sourcemaps.write()))
         .pipe(gulp.dest(public.css.path))
         .pipe(browserSync.stream());
 
@@ -171,11 +169,11 @@ gulp.task('jsWatch', gulp.series('js', function (done) {
 }));
 
 gulp.task('default', gulp.parallel('browser-sync', function (done) {
-    gulp.watch(`${src.js.path}*.js`, gulp.series('js'));
+    gulp.watch(`${src.js.path}**/*.js`, gulp.series('js'));
     gulp.watch(src.image, gulp.series('image'));
     gulp.watch(src.data, gulp.series('data'));
     gulp.watch(src.vendors, gulp.series('vendors'));
-    gulp.watch(`${src.css.path}*.scss`, gulp.series('css'));
+    gulp.watch('./src/**/*.{html,js,scss}', gulp.series('css'));
     gulp.watch(src.html.all, gulp.series('html'));
     gulp.watch(src.html.all, browserSync.reload);
     done();
