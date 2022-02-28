@@ -4,3 +4,5 @@
 
 // ======= Header partials ========
 // @@include('./partials/mobileDropdownMenu.js')
+
+// @@include('./partials/svgAnimations.js')
