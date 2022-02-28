@@ -31,7 +31,7 @@ const { public, src, prefixValue } = {
     src: {
         css: { path: 'src/assets/scss/', index: 'src/assets/scss/index.scss' },
         js: { path: 'src/assets/js/', index: 'src/assets/js/index.js' },
-        vendors: 'src/assets/vendors/**',
+        vendors: 'src/assets/vendors/**/**',
         image: 'src/assets/image/*',
         data: 'src/data/*',
         html: { pages: 'src/pages/*.html', all: 'src/pages/**/*.html' }
