@@ -11,9 +11,9 @@
 	<link rel="stylesheet" href="./assets/css/bundle.css">
 </head>
 
-<body class="font-sans overflow-x-hidden">
+<body class="font-sans w-screen overflow-x-hidden selection:bg-sky-400 selection:bg-opacity-40">
 	<!-- Header -->
-	<div class="container mx-auto">
+	<div class="container mx-auto fixed lg:static">
 		<header class="flex items-center m-1 px-5 py-3 z-[1000]">
 			<!-- logo -->
 			<div class="min-w-max z-[1010] fixed top-6 right-9 lg:static">
@@ -22,14 +22,34 @@
 			</div>
 			<!-- Navigation & Search Box-->
 			<div
-				class="mobile-menu flex pt-[max(20vh,7rem)] p-5 transition duration-500 ease-in-out -translate-x-full lg:transform-none lg:p-0 lg:flex-row flex-col justify-between items-stretch bg-green-100 lg:bg-transparent bg-opacity-80 backdrop-blure-75 lg:w-full lg:items-center fixed lg:static top-0 bottom-0 left-0">
+				class="mobile-menu w-[clamp(320px,100vw,380px)] lg:w-full min-h-screen lg:min-h-max overflow-y-scroll lg:overflow-y-visible flex flex-col lg:flex-row-reverse pt-[max(20vh,7rem)] p-5 lg:p-0 transition duration-500 ease-in-out -translate-x-full lg:transform-none justify-start lg:justify-between items-stretch lg:items-center bg-green-100 lg:bg-transparent bg-opacity-80 backdrop-blur-sm lg:backdrop-filter-none fixed lg:static top-0 bottom-0 left-0">
+				<!-- Search Box -->
+				<div>
+					<form class="flex relative shadow-xs rounded-lg" role="search">
+						<input
+							class="w-full max-w-xs bg-white lg:bg-green-50 bg-opacity-80 text-gray-700 px-6 py-2 rounded-r-lg outline-none peer autofill:bg-green-100"
+							type="search" name="search" placeholder="جستوجو ...">
+						<div
+							class="peer-focus-within:outline outline-green-300 outline-1 rounded-lg absolute top-0 right-0 bottom-0 left-0 pointer-events-none">
+						</div>
+						<button class="bg-green-300 active:bg-green-200 p-3 rounded-l-lg" type="submit">
+							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search"
+								width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="#6b7280" fill="none"
+								stroke-linecap="round" stroke-linejoin="round">
+								<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+								<circle cx="10" cy="10" r="7"></circle>
+								<line x1="21" y1="21" x2="15" y2="15"></line>
+							</svg>
+						</button>
+					</form>
+				</div>
 				<nav class="lg:mr-14 mt-2">
-					<ul class="flex flex-col lg:flex-row list-none text-gray-500">
-						<li class="mx-3 group"> <a href="" class="px-5 py-4 group-hover:text-green-700 block">خانه</a>
+					<ul class="flex flex-col lg:flex-row list-none text-gray-600">
+						<li class="mx-3 group"> <a href="" class="px-5 py-4 group-hover:text-gray-900 block">خانه</a>
 						</li>
 						<!-- mega menu -->
 						<li class="mx-3 group mega-menu">
-							<a href="" class="px-5 py-4 group-hover:text-green-700 block">ابزارها
+							<a href="" class="px-5 py-4 group-hover:text-gray-900 block">ابزارها
 								<svg xmlns="http://www.w3.org/2000/svg"
 									class="inline-block absolute mt-1 mr-1 left-8 lg:left-auto lg:group-hover:rotate-180 lg:group-focus-within:rotate-180 transition-transform"
 									width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -39,7 +59,7 @@
 								</svg>
 							</a>
 							<ul
-								class="list-none z-[1010] grid-cols-1 lg:grid lg:grid-cols-5 lg:gap-7 absolute top-0 bottom-0 left-0 right-0 lg:bottom-auto lg:top-auto bg-white shadow-xs py-32 px-8 lg:py-6 lg:px-20 transition-transform duration-500 lg:transition-opacity lg:duration-200 -translate-x-full lg:translate-x-0 lg:invisible lg:opacity-0 group-hover:visible group-focus-within:visible group-hover:opacity-100 group-focus-within:opacity-100">
+								class="list-none min-h-full lg:min-h-fit overflow-y-scroll overflow-x-hidden lg:overflow-y-visible z-[1010] grid-cols-1 lg:grid lg:grid-cols-5 lg:gap-7 absolute top-0 bottom-0 left-0 right-0 lg:bottom-auto lg:top-auto bg-white shadow-xs py-32 px-8 lg:py-6 lg:px-20 lg:-mt-1 transition-transform duration-500 lg:transition-all lg:duration-200 -translate-x-full lg:translate-x-0 lg:invisible lg:opacity-0 group-hover:visible group-focus-within:visible group-hover:opacity-100 group-focus-within:opacity-100">
 								<button type="button"
 									class="close-mega-menu mobile-nav-toggle open absolute lg:hidden top-9 left-9 z-[1100]">
 									<span></span><span></span><span></span><span></span>
@@ -99,8 +119,7 @@
 						</li>
 						<!-- dropdown menu -->
 						<li class="mx-3 group drop-down">
-							<a href="" class="px-5 py-4 group-hover:text-green-700 block"
-								isDropdownOpened="false">مقالات
+							<a href="" class="px-5 py-4 group-hover:text-gray-900 block">مقالات
 								<svg xmlns="http://www.w3.org/2000/svg"
 									class="inline-block absolute mt-1 mr-1 left-8 lg:left-auto lg:group-hover:rotate-180 lg:group-focus-within:rotate-180 transition-transform"
 									width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -110,44 +129,23 @@
 								</svg>
 							</a>
 							<ul
-								class="list-none hidden lg:block lg:absolute z-[1010]  left-0 right-0 lg:left-auto lg:right-auto lg:min-w-[15ch] lg:max-w-[20ch] bg-green-100 lg:bg-white lg:shadow-xs rounded-lg px-10 lg:px-0 py-3 transition-opacity duration-200 lg:invisible lg:opacity-0 group-hover:visible group-focus-within:visible group-hover:opacity-100 group-focus-within:opacity-100">
+								class="list-none hidden lg:block lg:absolute z-[1010] left-0 right-0 lg:left-auto lg:right-auto lg:min-w-[15ch] lg:max-w-[20ch] bg-green-100 bg-opacity-60 lg:bg-white lg:shadow-xs rounded-lg px-10 lg:px-0 py-3 lg:-mt-1 transition-all duration-200 lg:invisible lg:opacity-0 group-hover:visible group-focus-within:visible group-hover:opacity-100 group-focus-within:opacity-100">
 								<li><a href=""
-										class="pr-4 pl-6 py-2 block hover:pr-6 transition-all hover:text-green-700 relative overflow-hidden before:absolute before:bg-green-600 before:w-1 before:right-0 before:top-1 before:bottom-1 before:rounded-l-sm before:transition-transform before:translate-x-full hover:before:translate-x-0">دسته
+										class="pr-4 pl-6 py-2 block hover:pr-6 transition-all hover:text-gray-900 relative overflow-hidden before:absolute before:bg-green-600 before:w-1 before:right-0 before:top-1 before:bottom-1 before:rounded-l-sm before:transition-transform before:translate-x-full hover:before:translate-x-0">دسته
 										یک</a></li>
 								<li><a href=""
-										class="pr-4 pl-6 py-2 block hover:pr-6 transition-all hover:text-green-700 relative overflow-hidden before:absolute before:bg-green-600 before:w-1 before:right-0 before:top-1 before:bottom-1 before:rounded-l-sm before:transition-transform before:translate-x-full hover:before:translate-x-0">دسته
+										class="pr-4 pl-6 py-2 block hover:pr-6 transition-all hover:text-gray-900 relative overflow-hidden before:absolute before:bg-green-600 before:w-1 before:right-0 before:top-1 before:bottom-1 before:rounded-l-sm before:transition-transform before:translate-x-full hover:before:translate-x-0">دسته
 										یک</a></li>
 								<li><a href=""
-										class="pr-4 pl-6 py-2 block hover:pr-6 transition-all hover:text-green-700 relative overflow-hidden before:absolute before:bg-green-600 before:w-1 before:right-0 before:top-1 before:bottom-1 before:rounded-l-sm before:transition-transform before:translate-x-full hover:before:translate-x-0">دسته
+										class="pr-4 pl-6 py-2 block hover:pr-6 transition-all hover:text-gray-900 relative overflow-hidden before:absolute before:bg-green-600 before:w-1 before:right-0 before:top-1 before:bottom-1 before:rounded-l-sm before:transition-transform before:translate-x-full hover:before:translate-x-0">دسته
 										یک</a></li>
 							</ul>
 						</li>
-						<li class="mx-3 group"> <a href="" class="px-5 py-4 group-hover:text-green-700 block">درباره
+						<li class="mx-3 group"> <a href="" class="px-5 py-4 group-hover:text-gray-900 block">درباره
 								ما</a>
 						</li>
 					</ul>
 				</nav>
-				<!-- Search Box -->
-				<div>
-					<form class="flex relative">
-						<input
-							class="bg-white lg:bg-green-50 bg-opacity-80 text-gray-700 shadow-xs shadow-green-100 backdrop-blur-sm px-6 py-2 rounded-r-lg outline-none peer autofill:bg-green-100"
-							type="search" name="search" placeholder="جستوجو ...">
-						<div
-							class="peer-focus-within:outline outline-green-200 rounded-lg absolute top-0 right-0 bottom-0 left-0 pointer-events-none">
-						</div>
-						<button class="bg-green-300 active:bg-green-200 shadow-xs shadow-green-200 p-3 rounded-l-lg"
-							type="submit">
-							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search"
-								width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="#6b7280" fill="none"
-								stroke-linecap="round" stroke-linejoin="round">
-								<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-								<circle cx="10" cy="10" r="7"></circle>
-								<line x1="21" y1="21" x2="15" y2="15"></line>
-							</svg>
-						</button>
-					</form>
-				</div>
 			</div>
 			<!-- Burger Menu Icon -->
 			<button type="button" id="mobile-nav-toggle"
