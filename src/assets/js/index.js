@@ -5,4 +5,7 @@
 // ======= Header partials ========
 // @@include('./partials/mobileDropdownMenu.js')
 
+// ======= Why Us Section =========
+// @@include('./partials/whyUs.js')
+
 // @@include('./partials/svgAnimations.js')
